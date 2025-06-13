@@ -13,14 +13,17 @@ export default [
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-       parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
         React: true,
         process: 'readonly',
+      },
+      env: {
+        browser: true,
       },
     },
     plugins: {

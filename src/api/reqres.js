@@ -25,7 +25,6 @@ export const usersApi = {
 
 reqresApi.interceptors.request.use(
   (config) => {
-    console.log('Request headers:', config.headers);
     const token = localStorage.getItem('authToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
