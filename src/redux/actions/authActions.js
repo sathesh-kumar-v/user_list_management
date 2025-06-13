@@ -1,18 +1,15 @@
 import { authApi } from '../../api/reqres';
-import {
-  AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_SUCCESS,
-  AUTH_LOGIN_FAILURE,
-  AUTH_LOGOUT,
-} from '../types';
+import { AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAILURE, AUTH_LOGOUT} from '../types';
 
 export const login = (email, password) => async (dispatch) => {
   dispatch({ type: AUTH_LOGIN_REQUEST });
   try {
     const response = await authApi.login(email, password);
-    localStorage.setItem('authToken', response.data.token); // Save token securely
+
+    // Save the token in local storage
+    localStorage.setItem('authToken', response.data.token);
     dispatch({ type: AUTH_LOGIN_SUCCESS, payload: response.data.token });
-    return true; // Indicate success for redirection
+    return true;
   } catch (error) {
     const errorMessage =
       error.response?.data?.error ||

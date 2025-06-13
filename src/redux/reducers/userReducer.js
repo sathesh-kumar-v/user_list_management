@@ -37,7 +37,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        users: action.payload.data, // Data array of users
+        users: action.payload.data,
         currentPage: action.payload.page,
         totalPages: action.payload.total_pages,
         totalUsers: action.payload.total,

@@ -28,13 +28,13 @@ export const createUser = (userData) => async (dispatch) => {
   dispatch({ type: CREATE_USER_REQUEST });
 
   try {
-    const response = await usersApi.createUser(userData); // Use configured instance
+    const response = await usersApi.createUser(userData);
 
     // Simulate ID since Reqres doesn't return one
     const newUser = {
       ...userData,
-      id: Math.floor(Math.random() * 10000), // or use Date.now()
-      ...response.data, // Optionally include response data (like createdAt)
+      id: Math.floor(Math.random() * 10000),
+      ...response.data,
     };
 
     dispatch({ type: CREATE_USER_SUCCESS, payload: newUser });
@@ -69,12 +69,10 @@ export const deleteUser = (id) => async (dispatch) => {
   dispatch({ type: DELETE_USER_REQUEST });
 
   try {
-    await usersApi.deleteUser(id); // Still sends DELETE to mock API
+    await usersApi.deleteUser(id);
 
     dispatch({ type: DELETE_USER_SUCCESS, payload: id });
 
-    // ❌ Don't call getUsers(1) — it resets the state with unchanged data
-    // dispatch(getUsers(1)); <-- remove this
   } catch (error) {
     console.error('Delete error:', error.response?.data || error.message);
     dispatch({ type: DELETE_USER_FAILURE, payload: error.message });

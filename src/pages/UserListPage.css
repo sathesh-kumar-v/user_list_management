@@ -14,7 +14,6 @@
   transform: translateY(-4px);
 }
 
-/* Position the action buttons at the bottom center */
 .user-card-actions {
   position: absolute;
   bottom: 16px; /* Adjust as needed */
@@ -31,7 +30,6 @@
   opacity: 1;
 }
 
-/* Optional hover animation */
 .edit-icon:hover,
 .delete-icon:hover {
   filter: brightness(1.2);

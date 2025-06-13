@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect and useState
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../redux/actions/authActions';
@@ -36,17 +36,14 @@ const LoginPage = () => {
       // If rememberMe is false, clear the remembered email from localStorage
       localStorage.removeItem('rememberedEmail');
     }
-    // Always store the state of the rememberMe checkbox
     localStorage.setItem('rememberMe', rememberMe);
   }, [rememberMe]);
 
   // Handle form submission
   const handleSubmit = async (values) => {
-    // If rememberMe is checked, store the current email
     if (rememberMe) {
       localStorage.setItem('rememberedEmail', values.email);
     } else {
-      // If not checked, remove any previously remembered email
       localStorage.removeItem('rememberedEmail');
     }
 
@@ -74,7 +71,6 @@ const LoginPage = () => {
           Login
         </Title>
         <Formik
-          // Set initial email value from rememberedEmail, default to reqres.in test email if none remembered
           initialValues={{
             email: rememberedEmail || 'eve.holt@reqres.in',
             password: 'cityslicka',
@@ -112,11 +108,8 @@ const LoginPage = () => {
                   {...getFieldProps('password')}
                 />
               </Form.Item>
-
-              {/* Remember Me Checkbox */}
               <Form.Item style={{ marginBottom: 0 }}>
                 {' '}
-                {/* Use Form.Item for proper Ant Design alignment */}
                 <Checkbox
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
@@ -127,7 +120,6 @@ const LoginPage = () => {
 
               <Form.Item style={{ marginTop: 24 }}>
                 {' '}
-                {/* Add margin top to separate from checkbox */}
                 <Button
                   type="primary"
                   htmlType="submit"

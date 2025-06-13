@@ -1,4 +1,54 @@
-# Getting Started with Create React App
+# User List Management
+
+A modern React application for managing users, featuring authentication, CRUD operations, search, pagination, and responsive UI with Ant Design.
+
+## Features
+
+- **Authentication:** Secure login using JWT token (Reqres API).
+- **User Management:** Create, read, update, and delete users.
+- **Search & Pagination:** Filter users by name and navigate through pages.
+- **Responsive UI:** Table and card views for user lists, styled with Ant Design.
+- **Protected Routes:** Only authenticated users can access the user list.
+- **State Management:** Redux for global state, redux-thunk for async actions.
+- **Form Validation:** Formik and Yup for robust form handling.
+- **API Integration:** Uses [Reqres](https://reqres.in/) as a mock backend.
+- **Remember Me:** Option to remember email on login.
+- **Error Handling:** User-friendly error messages and loading indicators.
+
+## Project Structure
+
+```
+my-app
+├── public
+│   ├── index.html
+│   └── favicon.ico
+├── src
+│   ├── api
+│   │   └── reqres.js
+│   ├── assets
+│   │   └── images
+│   ├── components
+│   │   ├── common
+│   │   ├── layout
+│   │   └── users
+│   ├── config
+│   ├── hooks
+│   ├── pages
+│   │   ├── Home
+│   │   └── Login
+│   ├── redux
+│   │   ├── actions
+│   │   ├── reducers
+│   │   └── store.js
+│   ├── styles
+│   └── utils
+├── .env
+├── .gitignore
+├── package.json
+└── README.md
+```
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -1,46 +1,13 @@
-// src/pages/UserListPage.js
-
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getUsers,
-  deleteUser,
-  setSearchQuery,
-  setCurrentPage,
-} from '../redux/actions/userActions';
+import { getUsers, deleteUser, setSearchQuery, setCurrentPage} from '../redux/actions/userActions';
 import { logout } from '../redux/actions/authActions';
 import UserModal from '../components/UserModal';
 import { useNavigate } from 'react-router-dom';
 import '@ant-design/v5-patch-for-react-19';
 import './UserListPage.css';
-
-import {
-  Layout,
-  theme,
-  Input,
-  Button,
-  Table,
-  Space,
-  Avatar,
-  Pagination,
-  Card,
-  Row,
-  Col,
-  Typography,
-  Spin,
-  Alert,
-  Modal as AntdModal,
-  Flex,
-} from 'antd';
-import {
-  UserOutlined,
-  PlusOutlined,
-  TableOutlined,
-  AppstoreOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  LogoutOutlined,
-} from '@ant-design/icons';
+import { Layout, theme, Input, Button, Table, Space, Avatar, Pagination, Card, Row, Col, Typography, Spin, Alert, Modal as AntdModal, Flex,} from 'antd';
+import { UserOutlined, PlusOutlined, TableOutlined, AppstoreOutlined, EditOutlined, DeleteOutlined, LogoutOutlined,} from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -168,8 +135,8 @@ const UserListPage = () => {
             Edit
           </Button>
           <Button
-            type="primary" // <--- CHANGED: Set type to "primary"
-            danger // <--- KEPT: Keep the danger prop to make it red
+            type="primary"
+            danger
             icon={<DeleteOutlined />}
             onClick={() => handleDeleteUser(record.id)}
           >
@@ -183,7 +150,6 @@ const UserListPage = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      {/* Dark Header: Only contains user name and Logout button */}
       <Header
         style={{
           display: 'flex',
@@ -195,15 +161,13 @@ const UserListPage = () => {
       >
         <Space align="center">
           <Text style={{ color: 'white', marginRight: 8 }}>Elon Musk</Text>
-          {/* <Avatar style={{ backgroundColor: '#f56a00', verticalAlign: 'middle' }}>C</Avatar> */}
-          {/* Logout Button: Changed to type="primary" and danger, removed text, added shape="circle" */}
           <Button
-            type="primary" // Use primary type for a solid background
-            danger // Apply Ant Design's danger (red) color scheme
+            type="primary"
+            danger
             icon={<LogoutOutlined />}
             onClick={handleLogout}
-            shape="circle" // Make the button round
-            style={{ marginLeft: 8 }} // Add a little margin from the avatar
+            shape="circle"
+            style={{ marginLeft: 8 }}
           />
         </Space>
       </Header>
@@ -312,7 +276,6 @@ const UserListPage = () => {
                           </div>
                         }
                       >
-                        {/* Buttons positioned outside the blur area */}
                         <div className="user-card-actions">
                           <Button
                             shape="circle"

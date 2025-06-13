@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'; // Your base CSS file, if any
+import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-// Correct the import path for the Redux store
-import store from './redux/store'; // THIS IS THE CRUCIAL CORRECTION
+import store from './redux/store';
 import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

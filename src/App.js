@@ -12,8 +12,8 @@ import UserListPage from './pages/UserListPage';
 import PrivateRoute from './components/PrivateRoute';
 
 // Import Ant Design's global CSS for styling
-import 'antd/dist/reset.css'; // This is the recommended import for Ant Design v5 and above
-import './styles/App.css'; // Keep this if you have any custom global styles or overrides
+import 'antd/dist/reset.css';
+import './styles/App.css';
 
 const App = () => {
   return (

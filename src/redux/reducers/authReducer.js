@@ -1,13 +1,8 @@
-import {
-  AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_SUCCESS,
-  AUTH_LOGIN_FAILURE,
-  AUTH_LOGOUT,
-} from '../types';
+import { AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAILURE, AUTH_LOGOUT} from '../types';
 
 const initialState = {
   token: localStorage.getItem('authToken') || null,
-  isAuthenticated: !!localStorage.getItem('authToken'), // Check if token exists
+  isAuthenticated: !!localStorage.getItem('authToken'),
   loading: false,
   error: null,
 };
