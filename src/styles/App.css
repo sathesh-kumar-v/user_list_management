@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa; /* Light background for the overall app */
 }
 
 code {
@@ -15,3 +16,5 @@ code {
 .ant-layout-header {
   line-height: normal !important;
 }
+
+/* You can add more specific overrides here if Ant Design's defaults aren't enough */
