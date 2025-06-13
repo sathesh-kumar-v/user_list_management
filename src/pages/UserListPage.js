@@ -288,80 +288,80 @@ const UserListPage = () => {
                 rowKey="id"
                 pagination={false}
                 loading={loading}
-                
+
               />
             )}
 
-           {viewMode === "card" && (
-  <Row gutter={[16, 16]} style={{ marginTop: 20 }}>
-    {filteredUsers.map((user) => (
-      <Col xs={24} sm={12} md={8} lg={6} xl={4} key={user.id}>
-        <div className="user-card-wrapper">
-          <Card
-  hoverable
-  className="user-card"
-  cover={
-    <div className="avatar-container">
-      <Avatar
-        size={100}
-        src={user.avatar}
-        icon={<UserOutlined />}
-        style={{ display: "block", margin: "20px auto 10px" }}
-      />
-    </div>
-  }
->
-  {/* Buttons positioned outside the blur area */}
-  <div className="user-card-actions">
-    <Button
-      shape="circle"
-      size="large"
-      type="primary"
-      icon={<EditOutlined />}
-      className="edit-icon"
-      style={{
-        backgroundColor: '#40a9ff',
-        borderColor: '#40a9ff',
-        color: 'white',
-        boxShadow: '0 0 8px rgba(64, 169, 255, 0.6)',
-      }}
-      onClick={() => handleEditUser(user)}
-    />
-    <Button
-      shape="circle"
-      size="large"
-      type="primary"
-      danger
-      icon={<DeleteOutlined />}
-      className="delete-icon"
-      style={{
-        backgroundColor: '#ff4d4f',
-        borderColor: '#ff4d4f',
-        color: 'white',
-        boxShadow: '0 0 8px rgba(255, 77, 79, 0.6)',
-      }}
-      onClick={() => handleDeleteUser(user.id)}
-    />
-  </div>
+            {viewMode === "card" && (
+              <Row gutter={[16, 16]} style={{ marginTop: 20 }}>
+                {filteredUsers.map((user) => (
+                  <Col xs={24} sm={12} md={8} lg={6} xl={4} key={user.id} >
+                    <div className="user-card-wrapper">
+                      <Card
+                        hoverable
+                        className="user-card"
+                        cover={
+                          <div className="avatar-container">
+                            <Avatar
+                              size={100}
+                              src={user.avatar}
+                              icon={<UserOutlined />}
+                              style={{ display: "block", margin: "20px auto 10px" }}
+                            />
+                          </div>
+                        }
+                      >
+                        {/* Buttons positioned outside the blur area */}
+                        <div className="user-card-actions">
+                          <Button
+                            shape="circle"
+                            size="large"
+                            type="primary"
+                            icon={<EditOutlined />}
+                            className="edit-icon"
+                            style={{
+                              backgroundColor: '#40a9ff',
+                              borderColor: '#40a9ff',
+                              color: 'white',
+                              boxShadow: '0 0 8px rgba(64, 169, 255, 0.6)',
+                            }}
+                            onClick={() => handleEditUser(user)}
+                          />
+                          <Button
+                            shape="circle"
+                            size="large"
+                            type="primary"
+                            danger
+                            icon={<DeleteOutlined />}
+                            className="delete-icon"
+                            style={{
+                              backgroundColor: '#ff4d4f',
+                              borderColor: '#ff4d4f',
+                              color: 'white',
+                              boxShadow: '0 0 8px rgba(255, 77, 79, 0.6)',
+                            }}
+                            onClick={() => handleDeleteUser(user.id)}
+                          />
+                        </div>
 
-  <Card.Meta
-    title={
-      <Title level={5} style={{ marginBottom: 0, textAlign: "center" }}>
-        {user.first_name} {user.last_name}
-      </Title>
-    }
-    description={
-      <Text type="secondary" style={{ display: "block", textAlign: "center" }}>
-        {user.email}
-      </Text>
-    }
-  />
-</Card>
-        </div>
-      </Col>
-    ))}
-  </Row>
-)}
+                        <Card.Meta
+                          title={
+                            <Title level={5} style={{ marginBottom: 0, textAlign: "center" }}>
+                              {user.first_name} {user.last_name}
+                            </Title>
+                          }
+                          description={
+                            <Text type="secondary" style={{ display: "block", textAlign: "center" }}>
+                              {user.email}
+                            </Text>
+                          }
+                        />
+                      </Card>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            )}
 
 
             <Flex justify="end" style={{ marginTop: 20 }}>
