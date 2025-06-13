@@ -1,268 +1,382 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUsers, deleteUser, setSearchQuery, setCurrentPage } from '../redux/actions/userActions';
-import { logout } from '../redux/actions/authActions';
-import UserModal from '../components/UserModal'; // Modal component for user creation/editing
-import { useNavigate } from 'react-router-dom';
-import '@ant-design/v5-patch-for-react-19';
+// src/pages/UserListPage.js
 
-// Import Ant Design components for UI layout, display, and interaction
+import React, { useEffect, useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Layout, Menu, theme, Input, Button, Table, Space, Avatar,
-  Pagination, Card, Row, Col, Typography, Spin, Alert, Modal as AntdModal, Flex,
-} from 'antd';
-// Import Ant Design Icons
-import {
-  UserOutlined, SearchOutlined, PlusOutlined, TableOutlined, AppstoreOutlined,
-  EditOutlined, DeleteOutlined, LogoutOutlined
-} from '@ant-design/icons';
+  getUsers,
+  deleteUser,
+  setSearchQuery,
+  setCurrentPage,
+} from "../redux/actions/userActions";
+import { logout } from "../redux/actions/authActions";
+import UserModal from "../components/UserModal";
+import { useNavigate } from "react-router-dom";
+import "@ant-design/v5-patch-for-react-19";
+import './UserListPage.css';
 
-const { Header, Content } = Layout; // Destructure Layout components
-const { Title, Text } = Typography; // Destructure Typography components
-const { Search } = Input; // Destructure Search component from Input
+import {
+  Layout,
+  theme,
+  Input,
+  Button,
+  Table,
+  Space,
+  Avatar,
+  Pagination,
+  Card,
+  Row,
+  Col,
+  Typography,
+  Spin,
+  Alert,
+  Modal as AntdModal,
+  Flex,
+} from "antd";
+import {
+  UserOutlined,
+  SearchOutlined,
+  PlusOutlined,
+  TableOutlined,
+  AppstoreOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
+
+const { Header, Content } = Layout;
+const { Title, Text } = Typography;
+const { Search } = Input;
 
 const UserListPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // Select user-related states from Redux store
-  const { users, loading, error, currentPage, totalPages, searchQuery } = useSelector((state) => state.users);
+  const { users, loading, error, currentPage, totalPages, searchQuery } =
+    useSelector((state) => state.users);
 
-  // State for controlling the UserModal visibility and current user for editing
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null); // Null for create, user object for edit
-  const [viewMode, setViewMode] = useState('table'); // 'table' or 'card' view mode
+  const [currentUser, setCurrentUser] = useState(null);
+  const [viewMode, setViewMode] = useState("table");
 
-  // Get Ant Design theme tokens for consistent styling
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  // Fetch users when the component mounts or current page changes
   useEffect(() => {
     dispatch(getUsers(currentPage));
   }, [dispatch, currentPage]);
 
-  // Handle user logout
-const handleLogout = () => {
-  console.log("Logout button clicked. Attempting to show confirmation modal."); // <--- ADD THIS LINE
-  AntdModal.confirm({
-    title: 'Confirm Logout',
-    content: 'Are you sure you want to log out?',
-    onOk() {
-      console.log("Modal OK clicked. Dispatching logout and navigating."); // <--- ADD THIS LINE
-      dispatch(logout()); // Dispatch logout action
-      navigate('/login'); // Redirect to login page
-    },
-    onCancel() { // Add onCancel to see if user cancels
-      console.log("Modal Cancel clicked.");
-    },
-    okText: 'Logout',
-    cancelText: 'Cancel',
-  });
-};
-
-  // Open modal for creating a new user
-  const handleCreateUser = () => {
-    setCurrentUser(null); // Reset current user for creation
-    setIsModalOpen(true); // Open the modal
-  };
-
-  // Open modal for editing an existing user
-  const handleEditUser = (user) => {
-    console.log("handleEditUser called with user:", user);
-    setCurrentUser(user); // Set the user to be edited
-    setIsModalOpen(true); // Open the modal
-  };
-
-  // Handle user deletion
-  const handleDeleteUser = (id) => {
-    // Use Ant Design's confirmation modal before deleting
+  const handleLogout = () => {
     AntdModal.confirm({
-      title: 'Confirm Delete',
-      content: 'Are you sure you want to delete this user? This action cannot be undone.',
-      onOk() { // Callback for 'OK' button
-        dispatch(deleteUser(id)); // Dispatch delete user action
+      title: "Confirm Logout",
+      content: "Are you sure you want to log out?",
+      onOk() {
+        dispatch(logout());
+        navigate("/login");
       },
-      okText: 'Delete',
-      okType: 'danger', // Make the OK button red for danger action
-      cancelText: 'Cancel',
+      onCancel() {
+        console.log("Modal Cancel clicked.");
+      },
+      okText: "Logout",
+      cancelText: "Cancel",
     });
   };
 
-  // Handle search input change
+  const handleCreateUser = () => {
+    setCurrentUser(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEditUser = (user) => {
+    console.log("handleEditUser called with user:", user);
+    setCurrentUser(user);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteUser = (id) => {
+    AntdModal.confirm({
+      title: "Confirm Delete",
+      content:
+        "Are you sure you want to delete this user? This action cannot be undone.",
+      onOk() {
+        dispatch(deleteUser(id));
+      },
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+    });
+  };
+
   const handleSearch = (value) => {
-    dispatch(setSearchQuery(value)); // Update search query in Redux store
+    dispatch(setSearchQuery(value));
   };
 
-  // Handle pagination page change
   const handlePageChange = (page) => {
-    dispatch(setCurrentPage(page)); // Update current page in Redux store
+    dispatch(setCurrentPage(page));
   };
 
-  // Client-side search logic using useMemo for performance optimization
   const filteredUsers = useMemo(() => {
     if (!searchQuery) {
-      return users; // If no search query, return all users
+      return users;
     }
     const lowerCaseQuery = searchQuery.toLowerCase();
-    // Filter users by first_name or last_name (case-insensitive)
-    return users.filter(user =>
-      user.first_name?.toLowerCase().includes(lowerCaseQuery) ||
-      user.last_name?.toLowerCase().includes(lowerCaseQuery)
+    return users.filter(
+      (user) =>
+        user.first_name?.toLowerCase().includes(lowerCaseQuery) ||
+        user.last_name?.toLowerCase().includes(lowerCaseQuery)
     );
-  }, [users, searchQuery]); // Recalculate only when users or searchQuery change
+  }, [users, searchQuery]);
 
-
-  // Define columns for Ant Design Table component
   const columns = [
     {
-      title: '', // Empty header for avatar column
-      dataIndex: 'avatar',
-      key: 'avatar',
-      render: (text) => <Avatar src={text} icon={<UserOutlined />} />, // Render avatar using Ant Design Avatar
-      align: 'center',
+      title: "",
+      dataIndex: "avatar",
+      key: "avatar",
+      render: (text) => <Avatar src={text} icon={<UserOutlined />} />,
+      align: "center",
+      width: 250,
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      align: 'center',
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      align: "left",
+      width: 300,
     },
     {
-      title: 'First Name',
-      dataIndex: 'first_name',
-      key: 'first_name',
-      align: 'center',
+      title: "First Name",
+      dataIndex: "first_name",
+      key: "first_name",
+      align: "left",
+      width: 300,
     },
     {
-      title: 'Last Name',
-      dataIndex: 'last_name',
-      key: 'last_name',
-      align: 'center',
+      title: "Last Name",
+      dataIndex: "last_name",
+      key: "last_name",
+      align: "left",
+      width: 300,
     },
     {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => ( // Render action buttons for each row
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" icon={<EditOutlined />} onClick={() => handleEditUser(record)}>Edit</Button>
-          <Button type="danger" icon={<DeleteOutlined />} onClick={() => handleDeleteUser(record.id)}>Delete</Button>
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => handleEditUser(record)}
+          >
+            Edit
+          </Button>
+          <Button
+            type="primary" // <--- CHANGED: Set type to "primary"
+            danger // <--- KEPT: Keep the danger prop to make it red
+            icon={<DeleteOutlined />}
+            onClick={() => handleDeleteUser(record.id)}
+          >
+            Delete
+          </Button>
         </Space>
       ),
-      align: 'center',
+      align: "left",
     },
   ];
 
   return (
-    // Ant Design Layout for overall page structure
-    <Layout style={{ minHeight: '100vh' }}>
-      {/* Header of the page */}
-      <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', background: '#001529' }}>
-        <Title level={3} style={{ color: 'white', margin: 0 }}>Users</Title>
-        <Space align="center"> {/* <--- ADD align="center" HERE */}
-          {/* Search input with Ant Design Search component */}
-          <Search
-            placeholder="Search by name..."
-            onSearch={handleSearch} // Trigger search on pressing Enter or clicking search icon
-            onChange={(e) => dispatch(setSearchQuery(e.target.value))} // Update search query on input change
-            style={{ width: 200 }}
-            value={searchQuery} // Controlled component for search input
+    <Layout style={{ minHeight: "100vh" }}>
+      {/* Dark Header: Only contains user name and Logout button */}
+      <Header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          padding: "0 24px",
+          background: "#001529",
+        }}
+      >
+        <Space align="center">
+          <Text style={{ color: "white", marginRight: 8 }}>Elon Musk</Text>
+          {/* <Avatar style={{ backgroundColor: '#f56a00', verticalAlign: 'middle' }}>C</Avatar> */}
+          {/* Logout Button: Changed to type="primary" and danger, removed text, added shape="circle" */}
+          <Button
+            type="primary" // Use primary type for a solid background
+            danger // Apply Ant Design's danger (red) color scheme
+            icon={<LogoutOutlined />}
+            onClick={handleLogout}
+            shape="circle" // Make the button round
+            style={{ marginLeft: 8 }} // Add a little margin from the avatar
           />
-          {/* Button to create a new user */}
-          <Button type="primary" icon={<PlusOutlined />} onClick={handleCreateUser}>Create User</Button>
-          {/* Button to logout */}
-          <Button type="default" icon={<LogoutOutlined />} onClick={handleLogout}>Logout</Button>
         </Space>
       </Header>
+
       {/* Main content area */}
-      <Content style={{ margin: '24px 16px 0', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG }}>
-        {/* Toggle buttons for view mode (Table/Card) */}
+      <Content
+        style={{
+          margin: "24px 16px 0",
+          padding: 24,
+          minHeight: 280,
+          background: colorBgContainer,
+          borderRadius: borderRadiusLG,
+        }}
+      >
+        <Flex
+          justify="space-between"
+          align="center"
+          style={{ marginBottom: 20 }}
+        >
+          <Title level={3} style={{ margin: 0 }}>
+            Users
+          </Title>
+          <Space>
+            <Search
+              placeholder="Search by name..."
+              onSearch={handleSearch}
+              onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+              style={{ width: 200 }}
+              value={searchQuery}
+            />
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleCreateUser}
+            >
+              Create User
+            </Button>
+          </Space>
+        </Flex>
+
         <Space style={{ marginBottom: 16 }}>
           <Button
-            type={viewMode === 'table' ? 'primary' : 'default'} // Highlight active view mode
+            type={viewMode === "table" ? "primary" : "default"}
             icon={<TableOutlined />}
-            onClick={() => setViewMode('table')}
+            onClick={() => setViewMode("table")}
           >
             Table View
           </Button>
           <Button
-            type={viewMode === 'card' ? 'primary' : 'default'}
+            type={viewMode === "card" ? "primary" : "default"}
             icon={<AppstoreOutlined />}
-            onClick={() => setViewMode('card')}
+            onClick={() => setViewMode("card")}
           >
             Card View
           </Button>
         </Space>
 
-        {/* Loading spinner */}
-        {loading && <Spin tip="Loading users..." size="large" style={{ display: 'block', textAlign: 'center', marginTop: 50 }} />}
-        {/* Error message display */}
-        {error && <Alert message="Error" description={error} type="error" showIcon style={{ marginBottom: 15 }} />}
+        {loading && (
+          <Spin
+            tip="Loading users..."
+            size="large"
+            style={{ display: "block", textAlign: "left", marginTop: 50 }}
+          />
+        )}
+        {error && (
+          <Alert
+            message="Error"
+            description={error}
+            type="error"
+            showIcon
+            style={{ marginBottom: 15 }}
+          />
+        )}
 
-        {/* Render content only when not loading and no error */}
         {!loading && !error && (
           <>
-            {/* Table View */}
-            {viewMode === 'table' && (
+            {viewMode === "table" && (
               <Table
-                columns={columns} // Table columns definition
-                dataSource={filteredUsers} // Data to display in the table
-                rowKey="id" // Unique key for each row
-                pagination={false} // Disable Ant Design's built-in pagination as we use custom pagination
-                loading={loading} // Show loading state if data is being fetched
+                columns={columns}
+                dataSource={filteredUsers}
+                rowKey="id"
+                pagination={false}
+                loading={loading}
+                
               />
             )}
 
-            {/* Card View */}
-            {viewMode === 'card' && (
-              <Row gutter={[16, 16]} style={{ marginTop: 20 }}> {/* Ant Design Grid Row with gutter */}
-                {filteredUsers.map((user) => (
-                  <Col xs={24} sm={12} md={8} lg={6} xl={4} key={user.id}> {/* Responsive Grid Column */}
-                    <Card
-                      hoverable
-                      // Card cover showing user avatar
-                      cover={
-                        <Avatar
-                          size={100}
-                          src={user.avatar}
-                          icon={<UserOutlined />}
-                          style={{ margin: '20px auto 10px', display: 'block' }} // Center avatar
-                        />
-                      }
-                      // Actions at the bottom of the card
-                      actions={[
-                        <Button type="link" icon={<EditOutlined />} onClick={() => handleEditUser(user)}>Edit</Button>,
-                        <Button type="link" danger icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user.id)}>Delete</Button>,
-                      ]}
-                    >
-                      {/* Card meta section for title and description */}
-                      <Card.Meta
-                        title={<Title level={5} style={{ marginBottom: 0 }}>{user.first_name} {user.last_name}</Title>}
-                        description={<Text type="secondary">{user.email}</Text>}
-                      />
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            )}
+           {viewMode === "card" && (
+  <Row gutter={[16, 16]} style={{ marginTop: 20 }}>
+    {filteredUsers.map((user) => (
+      <Col xs={24} sm={12} md={8} lg={6} xl={4} key={user.id}>
+        <div className="user-card-wrapper">
+          <Card
+  hoverable
+  className="user-card"
+  cover={
+    <div className="avatar-container">
+      <Avatar
+        size={100}
+        src={user.avatar}
+        icon={<UserOutlined />}
+        style={{ display: "block", margin: "20px auto 10px" }}
+      />
+    </div>
+  }
+>
+  {/* Buttons positioned outside the blur area */}
+  <div className="user-card-actions">
+    <Button
+      shape="circle"
+      size="large"
+      type="primary"
+      icon={<EditOutlined />}
+      className="edit-icon"
+      style={{
+        backgroundColor: '#40a9ff',
+        borderColor: '#40a9ff',
+        color: 'white',
+        boxShadow: '0 0 8px rgba(64, 169, 255, 0.6)',
+      }}
+      onClick={() => handleEditUser(user)}
+    />
+    <Button
+      shape="circle"
+      size="large"
+      type="primary"
+      danger
+      icon={<DeleteOutlined />}
+      className="delete-icon"
+      style={{
+        backgroundColor: '#ff4d4f',
+        borderColor: '#ff4d4f',
+        color: 'white',
+        boxShadow: '0 0 8px rgba(255, 77, 79, 0.6)',
+      }}
+      onClick={() => handleDeleteUser(user.id)}
+    />
+  </div>
 
-            {/* Pagination controls */}
+  <Card.Meta
+    title={
+      <Title level={5} style={{ marginBottom: 0, textAlign: "center" }}>
+        {user.first_name} {user.last_name}
+      </Title>
+    }
+    description={
+      <Text type="secondary" style={{ display: "block", textAlign: "center" }}>
+        {user.email}
+      </Text>
+    }
+  />
+</Card>
+        </div>
+      </Col>
+    ))}
+  </Row>
+)}
+
+
             <Flex justify="end" style={{ marginTop: 20 }}>
-            <Pagination
-              current={currentPage} // Current active page
-              pageSize={6} // Number of items per page (based on Reqres API default)
-              total={totalPages * 6} // Total number of items (total_pages * items_per_page)
-              onChange={handlePageChange} // Callback for page change
-            /></Flex>
+              <Pagination
+                current={currentPage}
+                pageSize={6}
+                total={totalPages * 6}
+                onChange={handlePageChange}
+              />
+            </Flex>
           </>
         )}
 
-        {/* UserModal component, shown when isModalOpen is true */}
         {isModalOpen && (
-          <UserModal
-            user={currentUser} // Pass current user for editing, or null for creation
-            onClose={() => setIsModalOpen(false)} // Callback to close the modal
-          />
+          <UserModal user={currentUser} onClose={() => setIsModalOpen(false)} />
         )}
       </Content>
     </Layout>

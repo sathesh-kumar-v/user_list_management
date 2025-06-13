@@ -34,29 +34,30 @@ const userReducer = (state = initialState, action) => {
         totalUsers: action.payload.total,
       };
 
-    case CREATE_USER_SUCCESS:
-      // Reqres API creates new users with IDs starting from 100+.
-      // The API doesn't actually add them to the main /users endpoint response.
-      // Refetching (dispatch(getUsers(1))) handles this.
-      return { ...state, loading: false };
+   case 'CREATE_USER_SUCCESS':
+  return {
+    ...state,
+    loading: false,
+    users: [action.payload, ...state.users],
+  };
 
-    case UPDATE_USER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        // Update the specific user in the array if it exists
-        users: state.users.map((user) =>
-          user.id === action.payload.id ? { ...user, ...action.payload } : user
-        ),
-      };
+case 'UPDATE_USER_SUCCESS':
+  return {
+    ...state,
+    loading: false,
+    users: state.users.map((user) =>
+      user.id === action.payload.id ? { ...user, ...action.payload.data } : user
+    ),
+  };
 
-    case DELETE_USER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        // Remove the deleted user from the array
-        users: state.users.filter((user) => user.id !== action.payload),
-      };
+
+case 'DELETE_USER_SUCCESS':
+  return {
+    ...state,
+    loading: false,
+    users: state.users.filter(user => user.id !== action.payload),
+  };
+
 
     case GET_USERS_FAILURE:
     case CREATE_USER_FAILURE:

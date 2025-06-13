@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // This will now correctly pick up 'reqres-free-v1'
 const API_KEY = process.env.REACT_APP_REQRES_API_KEY;
-
+console.log("Loaded API KEY:", API_KEY);
 const API_BASE_URL = 'https://reqres.in/api';
 
 const reqresApi = axios.create({
@@ -28,6 +28,7 @@ export const usersApi = {
 
 reqresApi.interceptors.request.use(
   (config) => {
+    console.log('Request headers:', config.headers);
     const token = localStorage.getItem('authToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

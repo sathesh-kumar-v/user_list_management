@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { message } from 'antd';
 import { usersApi } from '../../api/reqres';
 import {
   GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAILURE,
@@ -18,43 +20,59 @@ export const getUsers = (page) => async (dispatch) => {
 };
 
 export const createUser = (userData) => async (dispatch) => {
-  dispatch({ type: CREATE_USER_REQUEST });
+  dispatch({ type: 'CREATE_USER_REQUEST' });
+
   try {
-    const response = await usersApi.createUser(userData);
-    dispatch({ type: CREATE_USER_SUCCESS, payload: response.data });
-    // Optionally refresh user list after creation (e.g., go to first page)
-    dispatch(getUsers(1));
-    return response.data; // Return data for success check in modal
+    const response = await usersApi.createUser(userData); // Use configured instance
+
+    // Simulate ID since Reqres doesn't return one
+    const newUser = {
+      ...userData,
+      id: Math.floor(Math.random() * 10000), // or use Date.now()
+      ...response.data, // Optionally include response data (like createdAt)
+    };
+
+    dispatch({ type: 'CREATE_USER_SUCCESS', payload: newUser });
+    return { success: true };
   } catch (error) {
-    const errorMessage = error.response?.data?.error || 'Failed to create user.';
-    dispatch({ type: CREATE_USER_FAILURE, payload: errorMessage });
-    return { error: true, message: errorMessage }; // Indicate failure
+    console.error("Create user failed:", error.response?.data || error.message);
+    dispatch({ type: 'CREATE_USER_FAIL', payload: error.message });
+    return { error: true };
   }
 };
 
-export const updateUser = (id, userData) => async (dispatch) => {
-  dispatch({ type: UPDATE_USER_REQUEST });
+
+export const updateUser = (id, updatedData) => async (dispatch) => {
+  dispatch({ type: 'UPDATE_USER_REQUEST' });
+
   try {
-    const response = await usersApi.updateUser(id, userData);
-    dispatch({ type: UPDATE_USER_SUCCESS, payload: response.data });
-    // Optionally refresh user list after update
-    dispatch(getUsers(1));
-    return response.data; // Return data for success check in modal
+    await usersApi.updateUser(id, updatedData);
+
+    dispatch({
+      type: 'UPDATE_USER_SUCCESS',
+      payload: { id, data: updatedData },
+    });
+
+    return { success: true };
   } catch (error) {
-    const errorMessage = error.response?.data?.error || 'Failed to update user.';
-    dispatch({ type: UPDATE_USER_FAILURE, payload: errorMessage });
-    return { error: true, message: errorMessage }; // Indicate failure
+    console.error("Update error:", error.response?.data || error.message);
+    dispatch({ type: 'UPDATE_USER_FAIL', payload: error.message });
+    return { error: true };
   }
 };
 
 export const deleteUser = (id) => async (dispatch) => {
   dispatch({ type: DELETE_USER_REQUEST });
+
   try {
-    await usersApi.deleteUser(id);
+    await usersApi.deleteUser(id); // Still sends DELETE to mock API
+
     dispatch({ type: DELETE_USER_SUCCESS, payload: id });
-    // Optionally refresh user list after deletion
-    dispatch(getUsers(1));
+
+    // ❌ Don't call getUsers(1) — it resets the state with unchanged data
+    // dispatch(getUsers(1)); <-- remove this
   } catch (error) {
+    console.error("Delete error:", error.response?.data || error.message);
     dispatch({ type: DELETE_USER_FAILURE, payload: error.message });
   }
 };

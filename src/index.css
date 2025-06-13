@@ -15,3 +15,13 @@ code {
 .ant-layout-header {
   line-height: normal !important;
 }
+
+.ant-btn-primary.ant-btn-dangerous {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: #fff !important;
+}
+
+.ant-btn-link.ant-btn-dangerous {
+  color: #ff4d4f !important;
+}

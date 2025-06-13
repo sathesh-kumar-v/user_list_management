@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser, updateUser } from '../redux/actions/userActions';
 
-// Define validation schema for the user form
+// Validation schema
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required('First Name is required'),
   last_name: Yup.string().required('Last Name is required'),
@@ -21,7 +21,7 @@ const UserModal = ({ user, onClose }) => {
   const isEditing = !!user;
 
   useEffect(() => {
-    console.log("UserModal received user prop:", user);
+    console.log('UserModal received user prop:', user);
   }, [user]);
 
   const initialValues = {
@@ -33,12 +33,9 @@ const UserModal = ({ user, onClose }) => {
 
   const handleSubmit = async (values) => {
     try {
-      let actionResult;
-      if (isEditing) {
-        actionResult = await dispatch(updateUser(user.id, values));
-      } else {
-        actionResult = await dispatch(createUser(values));
-      }
+      const actionResult = isEditing
+        ? await dispatch(updateUser(user.id, values))
+        : await dispatch(createUser(values));
 
       if (actionResult && !actionResult.error) {
         message.success(`User ${isEditing ? 'updated' : 'created'} successfully!`);
@@ -47,7 +44,7 @@ const UserModal = ({ user, onClose }) => {
         message.error(actionResult?.message || error || 'An unknown error occurred.');
       }
     } catch (err) {
-      console.error("Submission error:", err);
+      console.error('Submission error:', err);
       message.error(error || 'An error occurred during submission.');
     }
   };
@@ -58,7 +55,7 @@ const UserModal = ({ user, onClose }) => {
       open={true}
       onCancel={onClose}
       footer={null}
-      destroyOnHidden
+      destroyOnClose
       maskClosable={!loading}
     >
       <Spin spinning={loading} tip="Submitting...">
@@ -66,62 +63,87 @@ const UserModal = ({ user, onClose }) => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
-          enableReinitialize={true}
+          enableReinitialize
         >
-          {({ handleSubmit, errors, touched, getFieldProps, initialValues: formikInitialValues }) => { // <--- CORRECTED: Added initialValues to destructuring
-            // You can now have statements here because we're using an explicit return block
-            console.log("Formik's actual initialValues:", formikInitialValues);
-
-            return ( // <--- CORRECTED: Explicit return
-              <Form onFinish={handleSubmit} layout="vertical">
-                <Form.Item
-                  label="First Name"
+          {({
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            values,
+            touched,
+            errors,
+          }) => (
+            <Form onFinish={handleSubmit} layout="vertical">
+              <Form.Item
+                label="First Name"
+                validateStatus={errors.first_name && touched.first_name ? 'error' : ''}
+                help={touched.first_name && errors.first_name}
+                required
+              >
+                <Input
                   name="first_name"
-                  validateStatus={errors.first_name && touched.first_name ? 'error' : ''}
-                  help={errors.first_name && touched.first_name ? errors.first_name : ''}
-                  required
-                >
-                  <Input {...getFieldProps('first_name')} />
-                </Form.Item>
-                <Form.Item
-                  label="Last Name"
+                  value={values.first_name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Last Name"
+                validateStatus={errors.last_name && touched.last_name ? 'error' : ''}
+                help={touched.last_name && errors.last_name}
+                required
+              >
+                <Input
                   name="last_name"
-                  validateStatus={errors.last_name && touched.last_name ? 'error' : ''}
-                  help={errors.last_name && touched.last_name ? errors.last_name : ''}
-                  required
-                >
-                  <Input {...getFieldProps('last_name')} />
-                </Form.Item>
-                <Form.Item
-                  label="Email"
+                  value={values.last_name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Email"
+                validateStatus={errors.email && touched.email ? 'error' : ''}
+                help={touched.email && errors.email}
+                required
+              >
+                <Input
                   name="email"
-                  validateStatus={errors.email && touched.email ? 'error' : ''}
-                  help={errors.email && touched.email ? errors.email : ''}
-                  required
-                >
-                  <Input {...getFieldProps('email')} />
-                </Form.Item>
-                <Form.Item
-                  label="Profile Image Link"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Profile Image Link"
+                validateStatus={errors.avatar && touched.avatar ? 'error' : ''}
+                help={touched.avatar && errors.avatar}
+                required
+              >
+                <Input
                   name="avatar"
-                  validateStatus={errors.avatar && touched.avatar ? 'error' : ''}
-                  help={errors.avatar && touched.avatar ? errors.avatar : ''}
-                  required
-                >
-                  <Input {...getFieldProps('avatar')} />
-                </Form.Item>
-                <Form.Item style={{ textAlign: 'right', marginBottom: 0 }}>
-                  <Button onClick={onClose} style={{ marginRight: 8 }}>
-                    Cancel
-                  </Button>
-                  <Button type="primary" htmlType="submit" loading={loading}>
-                    {isEditing ? 'Update' : 'Create'}
-                  </Button>
-                </Form.Item>
-                {error && <Alert message="Error" description={error} type="error" showIcon />}
-              </Form>
-            );
-          }}
+                  value={values.avatar}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Form.Item>
+
+              <Form.Item style={{ textAlign: 'right', marginBottom: 0 }}>
+                <Button onClick={onClose} style={{ marginRight: 8 }}>
+                  Cancel
+                </Button>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                  {isEditing ? 'Update' : 'Create'}
+                </Button>
+              </Form.Item>
+
+              {error && (
+                <Alert message="Error" description={error} type="error" showIcon />
+              )}
+            </Form>
+          )}
         </Formik>
       </Spin>
     </Modal>

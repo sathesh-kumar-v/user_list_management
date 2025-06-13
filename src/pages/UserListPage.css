@@ -1,0 +1,49 @@
+.user-card-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.user-card {
+  transition: transform 0.3s ease;
+}
+
+.user-card-wrapper:hover .user-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transform: translateY(-4px);
+}
+
+/* Position the action buttons at the bottom center */
+.user-card-actions {
+  position: absolute;
+  bottom: 16px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+.user-card-wrapper:hover .user-card-actions {
+  opacity: 1;
+}
+
+/* Optional hover animation */
+.edit-icon:hover,
+.delete-icon:hover {
+  filter: brightness(1.2);
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.edit-icon,
+.delete-icon {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+
+

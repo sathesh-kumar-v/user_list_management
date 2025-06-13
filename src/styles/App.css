@@ -17,4 +17,12 @@ code {
   line-height: normal !important;
 }
 
-/* You can add more specific overrides here if Ant Design's defaults aren't enough */
+.ant-btn-primary.ant-btn-dangerous {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: #fff !important;
+}
+
+.ant-btn-link.ant-btn-dangerous {
+  color: #ff4d4f !important;
+}
