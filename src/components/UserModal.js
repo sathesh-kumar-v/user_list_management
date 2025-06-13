@@ -12,7 +12,9 @@ const validationSchema = Yup.object().shape({
   first_name: Yup.string().required('First Name is required'),
   last_name: Yup.string().required('Last Name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
-  avatar: Yup.string().url('Invalid URL').required('Profile Image Link is required'),
+  avatar: Yup.string()
+    .url('Invalid URL')
+    .required('Profile Image Link is required'),
 });
 
 const UserModal = ({ user, onClose }) => {
@@ -38,10 +40,14 @@ const UserModal = ({ user, onClose }) => {
         : await dispatch(createUser(values));
 
       if (actionResult && !actionResult.error) {
-        message.success(`User ${isEditing ? 'updated' : 'created'} successfully!`);
+        message.success(
+          `User ${isEditing ? 'updated' : 'created'} successfully!`,
+        );
         onClose();
       } else {
-        message.error(actionResult?.message || error || 'An unknown error occurred.');
+        message.error(
+          actionResult?.message || error || 'An unknown error occurred.',
+        );
       }
     } catch (err) {
       console.error('Submission error:', err);
@@ -76,7 +82,9 @@ const UserModal = ({ user, onClose }) => {
             <Form onFinish={handleSubmit} layout="vertical">
               <Form.Item
                 label="First Name"
-                validateStatus={errors.first_name && touched.first_name ? 'error' : ''}
+                validateStatus={
+                  errors.first_name && touched.first_name ? 'error' : ''
+                }
                 help={touched.first_name && errors.first_name}
                 required
               >
@@ -90,7 +98,9 @@ const UserModal = ({ user, onClose }) => {
 
               <Form.Item
                 label="Last Name"
-                validateStatus={errors.last_name && touched.last_name ? 'error' : ''}
+                validateStatus={
+                  errors.last_name && touched.last_name ? 'error' : ''
+                }
                 help={touched.last_name && errors.last_name}
                 required
               >
@@ -140,7 +150,12 @@ const UserModal = ({ user, onClose }) => {
               </Form.Item>
 
               {error && (
-                <Alert message="Error" description={error} type="error" showIcon />
+                <Alert
+                  message="Error"
+                  description={error}
+                  type="error"
+                  showIcon
+                />
               )}
             </Form>
           )}

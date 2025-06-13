@@ -6,7 +6,16 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 // Import Ant Design components for UI
-import { Form, Input, Button, Card, Typography, Spin, Alert, Checkbox } from 'antd'; // Import Checkbox
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  Typography,
+  Spin,
+  Alert,
+  Checkbox,
+} from 'antd'; // Import Checkbox
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -23,11 +32,11 @@ const LoginPage = () => {
 
   // State to manage the "Remember Me" checkbox
   const [rememberMe, setRememberMe] = useState(
-    localStorage.getItem('rememberMe') === 'true' // Initialize from localStorage
+    localStorage.getItem('rememberMe') === 'true', // Initialize from localStorage
   );
   // State for the remembered email
   const [rememberedEmail, setRememberedEmail] = useState(
-    localStorage.getItem('rememberedEmail') || '' // Initialize from localStorage
+    localStorage.getItem('rememberedEmail') || '', // Initialize from localStorage
   );
 
   // Effect to update localStorage when rememberMe state changes
@@ -43,7 +52,6 @@ const LoginPage = () => {
     // Always store the state of the rememberMe checkbox
     localStorage.setItem('rememberMe', rememberMe);
   }, [rememberMe]);
-
 
   // Handle form submission
   const handleSubmit = async (values) => {
@@ -62,17 +70,27 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f0f2f5',
+      }}
+    >
       <Card
         style={{ width: 400, boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)' }}
         hoverable
       >
-        <Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>Login</Title>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>
+          Login
+        </Title>
         <Formik
           // Set initial email value from rememberedEmail, default to reqres.in test email if none remembered
           initialValues={{
             email: rememberedEmail || 'eve.holt@reqres.in',
-            password: 'cityslicka'
+            password: 'cityslicka',
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -94,8 +112,12 @@ const LoginPage = () => {
               <Form.Item
                 label="Password"
                 name="password"
-                validateStatus={errors.password && touched.password ? 'error' : ''}
-                help={errors.password && touched.password ? errors.password : ''}
+                validateStatus={
+                  errors.password && touched.password ? 'error' : ''
+                }
+                help={
+                  errors.password && touched.password ? errors.password : ''
+                }
               >
                 <Input.Password
                   prefix={<LockOutlined />}
@@ -105,7 +127,9 @@ const LoginPage = () => {
               </Form.Item>
 
               {/* Remember Me Checkbox */}
-              <Form.Item style={{ marginBottom: 0 }}> {/* Use Form.Item for proper Ant Design alignment */}
+              <Form.Item style={{ marginBottom: 0 }}>
+                {' '}
+                {/* Use Form.Item for proper Ant Design alignment */}
                 <Checkbox
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
@@ -114,12 +138,26 @@ const LoginPage = () => {
                 </Checkbox>
               </Form.Item>
 
-              <Form.Item style={{ marginTop: 24 }}> {/* Add margin top to separate from checkbox */}
-                <Button type="primary" htmlType="submit" block loading={loading}>
+              <Form.Item style={{ marginTop: 24 }}>
+                {' '}
+                {/* Add margin top to separate from checkbox */}
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  loading={loading}
+                >
                   Log In
                 </Button>
               </Form.Item>
-              {error && <Alert message={error} type="error" showIcon style={{ marginTop: 15 }} />}
+              {error && (
+                <Alert
+                  message={error}
+                  type="error"
+                  showIcon
+                  style={{ marginTop: 15 }}
+                />
+              )}
             </Form>
           )}
         </Formik>

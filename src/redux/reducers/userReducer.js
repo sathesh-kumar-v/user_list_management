@@ -1,9 +1,18 @@
 import {
-  GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAILURE,
-  CREATE_USER_REQUEST, CREATE_USER_SUCCESS, CREATE_USER_FAILURE,
-  UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE,
-  DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_FAILURE,
-  SET_SEARCH_QUERY, SET_CURRENT_PAGE
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_FAILURE,
+  CREATE_USER_REQUEST,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_FAILURE,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
+  SET_SEARCH_QUERY,
+  SET_CURRENT_PAGE,
 } from '../types';
 
 const initialState = {
@@ -34,30 +43,30 @@ const userReducer = (state = initialState, action) => {
         totalUsers: action.payload.total,
       };
 
-   case 'CREATE_USER_SUCCESS':
-  return {
-    ...state,
-    loading: false,
-    users: [action.payload, ...state.users],
-  };
+    case 'CREATE_USER_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        users: [action.payload, ...state.users],
+      };
 
-case 'UPDATE_USER_SUCCESS':
-  return {
-    ...state,
-    loading: false,
-    users: state.users.map((user) =>
-      user.id === action.payload.id ? { ...user, ...action.payload.data } : user
-    ),
-  };
+    case 'UPDATE_USER_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        users: state.users.map((user) =>
+          user.id === action.payload.id
+            ? { ...user, ...action.payload.data }
+            : user,
+        ),
+      };
 
-
-case 'DELETE_USER_SUCCESS':
-  return {
-    ...state,
-    loading: false,
-    users: state.users.filter(user => user.id !== action.payload),
-  };
-
+    case 'DELETE_USER_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        users: state.users.filter((user) => user.id !== action.payload),
+      };
 
     case GET_USERS_FAILURE:
     case CREATE_USER_FAILURE:

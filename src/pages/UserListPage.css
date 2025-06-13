@@ -8,7 +8,7 @@
 }
 
 .user-card-wrapper:hover .user-card {
-  background:rgb(197, 197, 197) ;
+  background: rgb(197, 197, 197);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   transform: translateY(-4px);
@@ -44,6 +44,3 @@
   pointer-events: auto;
   opacity: 1;
 }
-
-
-

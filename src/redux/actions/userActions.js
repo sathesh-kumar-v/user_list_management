@@ -2,11 +2,20 @@ import axios from 'axios';
 import { message } from 'antd';
 import { usersApi } from '../../api/reqres';
 import {
-  GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAILURE,
-  CREATE_USER_REQUEST, CREATE_USER_SUCCESS, CREATE_USER_FAILURE,
-  UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE,
-  DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_FAILURE,
-  SET_SEARCH_QUERY, SET_CURRENT_PAGE
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_FAILURE,
+  CREATE_USER_REQUEST,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_FAILURE,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
+  SET_SEARCH_QUERY,
+  SET_CURRENT_PAGE,
 } from '../types';
 
 export const getUsers = (page) => async (dispatch) => {
@@ -35,12 +44,11 @@ export const createUser = (userData) => async (dispatch) => {
     dispatch({ type: 'CREATE_USER_SUCCESS', payload: newUser });
     return { success: true };
   } catch (error) {
-    console.error("Create user failed:", error.response?.data || error.message);
+    console.error('Create user failed:', error.response?.data || error.message);
     dispatch({ type: 'CREATE_USER_FAIL', payload: error.message });
     return { error: true };
   }
 };
-
 
 export const updateUser = (id, updatedData) => async (dispatch) => {
   dispatch({ type: 'UPDATE_USER_REQUEST' });
@@ -55,7 +63,7 @@ export const updateUser = (id, updatedData) => async (dispatch) => {
 
     return { success: true };
   } catch (error) {
-    console.error("Update error:", error.response?.data || error.message);
+    console.error('Update error:', error.response?.data || error.message);
     dispatch({ type: 'UPDATE_USER_FAIL', payload: error.message });
     return { error: true };
   }
@@ -72,7 +80,7 @@ export const deleteUser = (id) => async (dispatch) => {
     // ❌ Don't call getUsers(1) — it resets the state with unchanged data
     // dispatch(getUsers(1)); <-- remove this
   } catch (error) {
-    console.error("Delete error:", error.response?.data || error.message);
+    console.error('Delete error:', error.response?.data || error.message);
     dispatch({ type: DELETE_USER_FAILURE, payload: error.message });
   }
 };
