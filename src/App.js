@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './redux/store';
 import LoginPage from './pages/LoginPage';
 import UserListPage from './pages/UserListPage';

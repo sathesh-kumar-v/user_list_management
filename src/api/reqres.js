@@ -1,15 +1,12 @@
 import axios from 'axios';
 
-// This will now correctly pick up 'reqres-free-v1'
 const API_KEY = process.env.REACT_APP_REQRES_API_KEY;
-console.log('Loaded API KEY:', API_KEY);
 const API_BASE_URL = 'https://reqres.in/api';
 
 const reqresApi = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    // This part correctly adds the x-api-key header
     ...(API_KEY && { 'x-api-key': API_KEY }),
   },
 });

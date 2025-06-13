@@ -34,7 +34,6 @@ import {
 } from 'antd';
 import {
   UserOutlined,
-  SearchOutlined,
   PlusOutlined,
   TableOutlined,
   AppstoreOutlined,

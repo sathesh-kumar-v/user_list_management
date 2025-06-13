@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { message } from 'antd';
 import { usersApi } from '../../api/reqres';
 import {
   GET_USERS_REQUEST,
@@ -7,10 +5,8 @@ import {
   GET_USERS_FAILURE,
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
-  CREATE_USER_FAILURE,
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAILURE,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILURE,
@@ -29,7 +25,7 @@ export const getUsers = (page) => async (dispatch) => {
 };
 
 export const createUser = (userData) => async (dispatch) => {
-  dispatch({ type: 'CREATE_USER_REQUEST' });
+  dispatch({ type: CREATE_USER_REQUEST });
 
   try {
     const response = await usersApi.createUser(userData); // Use configured instance
@@ -41,7 +37,7 @@ export const createUser = (userData) => async (dispatch) => {
       ...response.data, // Optionally include response data (like createdAt)
     };
 
-    dispatch({ type: 'CREATE_USER_SUCCESS', payload: newUser });
+    dispatch({ type: CREATE_USER_SUCCESS, payload: newUser });
     return { success: true };
   } catch (error) {
     console.error('Create user failed:', error.response?.data || error.message);
@@ -51,13 +47,13 @@ export const createUser = (userData) => async (dispatch) => {
 };
 
 export const updateUser = (id, updatedData) => async (dispatch) => {
-  dispatch({ type: 'UPDATE_USER_REQUEST' });
+  dispatch({ type: UPDATE_USER_REQUEST });
 
   try {
     await usersApi.updateUser(id, updatedData);
 
     dispatch({
-      type: 'UPDATE_USER_SUCCESS',
+      type: UPDATE_USER_SUCCESS,
       payload: { id, data: updatedData },
     });
 

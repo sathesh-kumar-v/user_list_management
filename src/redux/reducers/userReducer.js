@@ -21,7 +21,7 @@ const initialState = {
   error: null,
   currentPage: 1,
   totalPages: 1,
-  totalUsers: 0, // Not directly used in pagination logic but good to keep
+  totalUsers: 0,
   searchQuery: '',
 };
 
@@ -43,14 +43,14 @@ const userReducer = (state = initialState, action) => {
         totalUsers: action.payload.total,
       };
 
-    case 'CREATE_USER_SUCCESS':
+    case CREATE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         users: [action.payload, ...state.users],
       };
 
-    case 'UPDATE_USER_SUCCESS':
+    case UPDATE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -61,7 +61,7 @@ const userReducer = (state = initialState, action) => {
         ),
       };
 
-    case 'DELETE_USER_SUCCESS':
+    case DELETE_USER_SUCCESS:
       return {
         ...state,
         loading: false,

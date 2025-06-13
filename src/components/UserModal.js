@@ -1,5 +1,3 @@
-// src/components/UserModal.js
-
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Button, message, Spin, Alert } from 'antd';
 import { Formik } from 'formik';
@@ -61,7 +59,7 @@ const UserModal = ({ user, onClose }) => {
       open={true}
       onCancel={onClose}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
       maskClosable={!loading}
     >
       <Spin spinning={loading} tip="Submitting...">

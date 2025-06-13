@@ -4,18 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../redux/actions/authActions';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
-// Import Ant Design components for UI
-import {
-  Form,
-  Input,
-  Button,
-  Card,
-  Typography,
-  Spin,
-  Alert,
-  Checkbox,
-} from 'antd'; // Import Checkbox
+import { Form, Input, Button, Card, Typography, Alert, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -30,13 +19,11 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
 
-  // State to manage the "Remember Me" checkbox
   const [rememberMe, setRememberMe] = useState(
-    localStorage.getItem('rememberMe') === 'true', // Initialize from localStorage
+    localStorage.getItem('rememberMe') === 'true',
   );
-  // State for the remembered email
-  const [rememberedEmail, setRememberedEmail] = useState(
-    localStorage.getItem('rememberedEmail') || '', // Initialize from localStorage
+  const [rememberedEmail] = useState(
+    localStorage.getItem('rememberedEmail') || '',
   );
 
   // Effect to update localStorage when rememberMe state changes
